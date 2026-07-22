@@ -1,0 +1,16 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Tato kamera je již nastavená."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "camera_entity_id": "Kamera"
+        },
+        "description": "Vyberte kameru, která zabírá bazén a solární panely.",
+        "title": "Slunce na bazénových panelech"
+      }
+    }
+  }
+}

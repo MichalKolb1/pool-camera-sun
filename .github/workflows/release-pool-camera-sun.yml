@@ -1,0 +1,42 @@
+name: Release Pool Camera Sun
+
+on:
+  push:
+    tags:
+      - "pool-camera-sun-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify tag matches manifest version
+        shell: bash
+        run: |
+          manifest_version="$(jq -r '.version' custom_components/pool_camera_sun/manifest.json)"
+          tag_version="${GITHUB_REF_NAME#pool-camera-sun-v}"
+          test "$manifest_version" = "$tag_version" || {
+            echo "Tag version $tag_version does not match manifest $manifest_version"
+            exit 1
+          }
+
+      - name: Build HACS archive
+        shell: bash
+        run: |
+          cd custom_components/pool_camera_sun
+          zip -r "$GITHUB_WORKSPACE/pool_camera_sun.zip" .
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: >
+          gh release create "$GITHUB_REF_NAME"
+          pool_camera_sun.zip
+          --generate-notes
+          --title "Pool Camera Sun ${GITHUB_REF_NAME#pool-camera-sun-v}"
