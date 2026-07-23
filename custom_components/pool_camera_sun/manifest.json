@@ -6,12 +6,13 @@
   ],
   "config_flow": true,
   "dependencies": [
-    "camera"
+    "camera",
+    "http"
   ],
   "documentation": "https://github.com/MichalKolb1/pool-camera-sun",
   "integration_type": "service",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/MichalKolb1/pool-camera-sun/issues",
   "requirements": [],
-  "version": "1.2.3"
+  "version": "1.3.0"
 }

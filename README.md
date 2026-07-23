@@ -5,14 +5,36 @@ snapshot to determine whether direct sunlight is reaching a pool solar-heating
 area. It creates a light-class binary sensor intended for use in automations
 that decide when solar heating is useful.
 
-## Privacy and on-demand behavior
+## Privacy, on-demand behavior, and labeled samples
 
 Image analysis runs locally in Home Assistant. The integration does not upload
-camera images or analysis data to an external service.
+camera images or analysis data to an external service. Labeled samples are
+stored privately below Home Assistant's `.storage/pool_camera_sun/samples`
+directory. They are never written to `/www`, and the integration does not log
+image bytes, authentication tokens, or private camera URLs.
 
 The camera is not sampled on a schedule. A snapshot is requested and analyzed
 only when the binary sensor is explicitly refreshed. Until the first refresh,
 the sensor reports an initial `not_scanned` status.
+
+The integration also creates two manual sample buttons intended to use these
+stable entity IDs:
+
+- `button.pool_camera_sun_sviti` (`Svítí` / `Sunny`) saves label `sunny`.
+- `button.pool_camera_sun_nesviti` (`Nesvítí` / `Not sunny`) saves label
+  `not_sunny`.
+
+Press a button only after visually deciding the correct label. Each press
+fetches a fresh camera snapshot at that moment, runs the current production
+classifier on that exact image, and stores the original image with its UTC
+timestamp, manual label, algorithm prediction and decision path, threshold,
+and all brightness/contrast metrics. Captures are serialized. Retention is
+limited globally to the newest 100 complete image/metadata pairs per label;
+older pairs are removed automatically.
+
+Samples provide calibration evidence only. The production classifier never
+trains, changes its thresholds, or otherwise self-modifies from collected
+labels.
 
 ## Installation with HACS
 
@@ -70,6 +92,21 @@ The binary sensor exposes diagnostic attributes:
 | `analysis_region` | Analysis strategy identifier |
 | `camera_entity_id` | Camera selected during configuration |
 | `sampled_at` | UTC timestamp of the latest successful analysis |
+
+## Authenticated sample API
+
+A minimal read-only API is available for a future authorized analysis agent:
+
+| Method and path | Result |
+| --- | --- |
+| `GET /api/pool_camera_sun/samples` | Lists retained metadata; never returns image bytes |
+| `GET /api/pool_camera_sun/samples/{sample_id}/image` | Returns one retained image |
+
+Both endpoints require normal Home Assistant authentication, such as an
+authorized long-lived access token using standard bearer-token authentication.
+There is no unauthenticated export route. Image IDs must be exactly 32
+lowercase hexadecimal characters, and stored filenames are validated before
+access to prevent path traversal. API image responses disable caching.
 
 ## Releases and updates
 

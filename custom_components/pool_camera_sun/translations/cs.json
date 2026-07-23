@@ -12,5 +12,15 @@
         "title": "Slunce na bazénových panelech"
       }
     }
+  },
+  "entity": {
+    "button": {
+      "not_sunny": {
+        "name": "Nesvítí"
+      },
+      "sunny": {
+        "name": "Svítí"
+      }
+    }
   }
 }
