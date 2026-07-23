@@ -12,5 +12,15 @@
         "title": "Pool Camera Sun"
       }
     }
+  },
+  "entity": {
+    "button": {
+      "not_sunny": {
+        "name": "Not sunny"
+      },
+      "sunny": {
+        "name": "Sunny"
+      }
+    }
   }
 }

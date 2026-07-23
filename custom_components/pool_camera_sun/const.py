@@ -8,9 +8,25 @@ CONF_CAMERA_ENTITY_ID: Final = "camera_entity_id"
 
 DEFAULT_SUN_THRESHOLD: Final = 0.62
 SUN_HYSTERESIS: Final = 0.10
+ALGORITHM_VERSION: Final = "shadow_contrast_v1"
 
 ENTITY_NAME: Final = "Bazén – přímé slunce"
 ENTITY_OBJECT_ID: Final = "bazen_prime_slunce"
+
+DATA_API_REGISTERED: Final = "api_registered"
+DATA_CAPTURE_LOCK: Final = "capture_lock"
+DATA_ENTRIES: Final = "entries"
+DATA_SAMPLE_STORE: Final = "sample_store"
+
+LABEL_SUNNY: Final = "sunny"
+LABEL_NOT_SUNNY: Final = "not_sunny"
+SAMPLE_LABELS: Final = (LABEL_SUNNY, LABEL_NOT_SUNNY)
+MAX_SAMPLES_PER_LABEL: Final = 100
+
+API_SAMPLES_PATH: Final = "/api/pool_camera_sun/samples"
+API_SAMPLE_IMAGE_PATH: Final = (
+    "/api/pool_camera_sun/samples/{sample_id}/image"
+)
 
 # Grass determines direct sunlight; panel metrics are retained for diagnostics.
 GRASS_POLYGON: Final = (

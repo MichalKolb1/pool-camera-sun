@@ -11,7 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, ENTITY_NAME, ENTITY_OBJECT_ID
+from .const import DATA_ENTRIES, DOMAIN, ENTITY_NAME, ENTITY_OBJECT_ID
 from .coordinator import PoolCameraSunCoordinator
 
 
@@ -21,7 +21,9 @@ async def async_setup_entry(
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the sunlight binary sensor."""
-    coordinator: PoolCameraSunCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: PoolCameraSunCoordinator = hass.data[DOMAIN][DATA_ENTRIES][
+        entry.entry_id
+    ]
     async_add_entities([PoolCameraSunBinarySensor(coordinator, entry)])
 
 
