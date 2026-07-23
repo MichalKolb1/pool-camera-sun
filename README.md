@@ -108,6 +108,35 @@ There is no unauthenticated export route. Image IDs must be exactly 32
 lowercase hexadecimal characters, and stored filenames are validated before
 access to prevent path traversal. API image responses disable caching.
 
+## Refining the analysis from labeled samples
+
+Tell Copilot **“Spusť přesnější analýzu Pool Camera Sun”**. In a local clone of
+this repository, that workflow means setting the Home Assistant URL and a
+long-lived access token in environment variables, then running:
+
+```powershell
+python -m pip install -r requirements-tools.txt
+$env:POOL_CAMERA_SUN_HA_URL = "https://home-assistant.example"
+$env:POOL_CAMERA_SUN_HA_TOKEN = Read-Host -MaskInput "Home Assistant token"
+python tools\refine_pool_camera_sun.py --format json
+```
+
+The command accepts connection details only from those explicit environment
+variables. It validates the authenticated API manifest and every image
+response, enforces request, count, retention, media-type, and download-size
+limits, requires HTTPS except for loopback URLs, and uses the production
+feature extractor. Images exist only in an automatically removed system
+temporary directory outside the repository.
+Tokens, URLs, camera IDs, sample IDs, timestamps, filenames, paths, metadata,
+and image content are never included in output.
+
+At least 10 samples for each label are required before parameters are
+evaluated. Candidate brightness/contrast weights and thresholds must show a
+stable held-out improvement under deterministic stratified five-fold
+evaluation at both production threshold states (nominal and hysteresis) before
+the tool recommends a change. Its output is aggregate guidance only: it never
+edits, commits, or releases classifier settings automatically.
+
 ## Releases and updates
 
 Releases use tags in the form `pool-camera-sun-vX.Y.Z`. The release workflow

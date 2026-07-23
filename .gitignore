@@ -1,0 +1,4 @@
+# Defense in depth for any manually copied private sample artifacts.
+pool-camera-sun-private-*/
+pool-camera-sun-samples/
+__pycache__/
