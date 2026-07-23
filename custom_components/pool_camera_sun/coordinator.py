@@ -16,9 +16,6 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
-    BRIGHT_GRASS_MEAN_MIN,
-    BRIGHT_GRASS_P90_MIN,
-    BRIGHT_PANEL_CONTRAST_MIN,
     CONF_CAMERA_ENTITY_ID,
     DEFAULT_SUN_THRESHOLD,
     DOMAIN,
@@ -95,12 +92,6 @@ def _detect_direct_sun(
     """Detect direct sun and identify the successful decision path."""
     if metrics["sun_score"] >= threshold:
         return True, "shadow_contrast"
-    if (
-        metrics["p90"] >= BRIGHT_GRASS_P90_MIN
-        and metrics["brightness"] >= BRIGHT_GRASS_MEAN_MIN
-        and metrics["panel_contrast"] >= BRIGHT_PANEL_CONTRAST_MIN
-    ):
-        return True, "bright_grass_panel_confirmed"
     return False, "none"
 
 

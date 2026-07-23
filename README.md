@@ -62,7 +62,7 @@ The binary sensor exposes diagnostic attributes:
 | Attribute | Description |
 | --- | --- |
 | `status` | `not_scanned` before the first refresh, then `analyzed` |
-| `detection_path` | Decision path: `shadow_contrast`, `bright_grass_panel_confirmed`, or `none` |
+| `detection_path` | Decision path: `shadow_contrast` or `none` |
 | `sun_score` | Combined brightness and contrast score from 0 to 1 |
 | `threshold` | Decision threshold, including hysteresis |
 | `brightness`, `p10`, `p90`, `contrast` | Metrics for the reference grass region |
