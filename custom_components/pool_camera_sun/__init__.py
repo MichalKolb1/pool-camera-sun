@@ -17,6 +17,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         {
             "is_sunny": False,
             "status": "not_scanned",
+            "detection_path": "none",
             "analysis_region": "reference_grass_with_panel_diagnostics",
             "sun_score": None,
             "brightness": None,

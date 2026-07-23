@@ -66,6 +66,7 @@ class PoolCameraSunBinarySensor(
         data = self.coordinator.data
         return {
             "status": data["status"],
+            "detection_path": data["detection_path"],
             "analysis_region": data["analysis_region"],
             "sun_score": data["sun_score"],
             "brightness": data["brightness"],

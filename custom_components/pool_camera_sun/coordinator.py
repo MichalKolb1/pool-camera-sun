@@ -16,6 +16,9 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
+    BRIGHT_GRASS_MEAN_MIN,
+    BRIGHT_GRASS_P90_MIN,
+    BRIGHT_PANEL_CONTRAST_MIN,
     CONF_CAMERA_ENTITY_ID,
     DEFAULT_SUN_THRESHOLD,
     DOMAIN,
@@ -86,6 +89,21 @@ def _analyze_image(content: bytes) -> dict[str, float]:
     }
 
 
+def _detect_direct_sun(
+    metrics: dict[str, float], threshold: float
+) -> tuple[bool, str]:
+    """Detect direct sun and identify the successful decision path."""
+    if metrics["sun_score"] >= threshold:
+        return True, "shadow_contrast"
+    if (
+        metrics["p90"] >= BRIGHT_GRASS_P90_MIN
+        and metrics["brightness"] >= BRIGHT_GRASS_MEAN_MIN
+        and metrics["panel_contrast"] >= BRIGHT_PANEL_CONTRAST_MIN
+    ):
+        return True, "bright_grass_panel_confirmed"
+    return False, "none"
+
+
 class PoolCameraSunCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     """Fetch and analyze camera snapshots only when explicitly requested."""
 
@@ -127,11 +145,12 @@ class PoolCameraSunCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             if previous_is_sunny
             else DEFAULT_SUN_THRESHOLD
         )
-        is_sunny = metrics["sun_score"] >= threshold
+        is_sunny, detection_path = _detect_direct_sun(metrics, threshold)
 
         return {
             **metrics,
             "is_sunny": is_sunny,
+            "detection_path": detection_path,
             "status": "analyzed",
             "analysis_region": "reference_grass_with_panel_diagnostics",
             "threshold": round(threshold, 2),

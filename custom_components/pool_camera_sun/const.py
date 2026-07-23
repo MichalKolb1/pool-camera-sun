@@ -8,6 +8,9 @@ CONF_CAMERA_ENTITY_ID: Final = "camera_entity_id"
 
 DEFAULT_SUN_THRESHOLD: Final = 0.62
 SUN_HYSTERESIS: Final = 0.10
+BRIGHT_GRASS_P90_MIN: Final = 150
+BRIGHT_GRASS_MEAN_MIN: Final = 130
+BRIGHT_PANEL_CONTRAST_MIN: Final = 100
 
 ENTITY_NAME: Final = "Bazén – přímé slunce"
 ENTITY_OBJECT_ID: Final = "bazen_prime_slunce"
