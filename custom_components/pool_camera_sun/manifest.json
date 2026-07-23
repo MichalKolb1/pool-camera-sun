@@ -13,5 +13,5 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/MichalKolb1/pool-camera-sun/issues",
   "requirements": [],
-  "version": "1.2.2"
+  "version": "1.2.3"
 }
